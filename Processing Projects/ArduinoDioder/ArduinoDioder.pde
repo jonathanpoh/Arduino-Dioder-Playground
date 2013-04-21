@@ -1,4 +1,5 @@
-//Developed by Rajarshi Roy
+// Developed by Rajarshi Roy
+// http://siliconrepublic.blogspot.com.au/2011/02/arduino-based-pc-ambient-lighting.html
 import java.awt.Robot; //java library that lets us take screenshots
 import java.awt.AWTException;
 import java.awt.event.InputEvent;
