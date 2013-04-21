@@ -12,10 +12,9 @@ import processing.serial.*; //library for serial communication
 Serial port; //creates object "port" of serial class
 Robot robby; //creates object "robby" of robot class
 
-//IMPORTANT!!!
-//Put the right screen size in here, if isn't 100% right, the code might give some unexpected results.
-int screenW     = 1920;
-int screenH     = 1200;
+//init the screen size variables here.
+int screenW;
+int screenH;
 
 //Define a border on each side of the screen
 int borderLeft  = 10;
@@ -25,13 +24,13 @@ int borderBot   = 100;
 
 //Size of top left box
 boolean tlActiv = false;
-int topLeftW    = 350;
-int topLeftH    = 450;
+int topLeftW    = 400;
+int topLeftH    = 350;
 
 //Size of top right box
 boolean trActiv = false;
-int topRightW   = 350;
-int topRightH   = 450;
+int topRightW    = 400;
+int topRightH    = 350;
 
 //Size of top center box
 boolean tcActiv = true;
@@ -40,13 +39,13 @@ int topCenterH  = 250;
 
 //Size of bottom left box
 boolean blActiv = false;
-int botLeftW    = 350;
-int botLeftH    = 450;
+int botLeftW    = 400;
+int botLeftH    = 350;
 
 //Size of bottom right box
 boolean brActiv = false;
-int botRightW   = 350;
-int botRightH   = 450;
+int botRightW    = 400;
+int botRightH    = 350;
 
 //Size of bottom center box
 boolean bcActiv = false;
@@ -56,15 +55,24 @@ int botCenterH  = 250;
 //Color adjustments, use this to adjust the color values to match your LEDs
 int maxRed      = 255;
 int maxGreen    = 255;
-int maxBlue     = 125;
+int maxBlue     = 255;
 
 //How many pixels to skip while reading
 int pixelSpread = 2;
 
-void setup()
-{
-  port = new Serial(this, Serial.list()[0],115200); //set baud rate
-  size(screenW/5, screenH/5); //window size
+String portName = "/dev/tty.usbmodem1411";
+int portSpeed = 115200;
+
+void setup() {
+  // Get the screen width and height from Processing
+  screenW = displayWidth;
+  screenH = displayHeight;
+  size(screenW/5, screenH/5, P2D);
+  port = new Serial(this, portName, portSpeed); //set baud rate
+  if( port.output == null ) {
+        println("ERROR: Could not open serial port: "+portName);
+        exit();
+  }
 
   try //standard Robot class error check
   {
