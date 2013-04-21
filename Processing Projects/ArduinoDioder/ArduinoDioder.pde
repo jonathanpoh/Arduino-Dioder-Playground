@@ -180,46 +180,6 @@ void draw()
   }
 
 
-  //Calculate top center rectangle
-  if (tcActiv)
-  {
-    for(int i = (screenW/2) - (topCenterW/2); i < (screenW/2) + (topCenterW/2); i += pixelSpread)
-    {
-      for(int j = borderTop; j < (topCenterH + borderTop); j += pixelSpread)
-      {
-        pixel = screenshot.getRGB(i,j); //the ARGB integer has the colors of pixel (i,j)
-        r = r+(int)(maxRed&(pixel>>16)); //add up reds
-        g = g+(int)(maxGreen&(pixel>>8)); //add up greens
-        b = b+(int)(maxBlue&(pixel)); //add up blues
-      }
-    }
-    r = r / ( (topCenterW / pixelSpread) * (topCenterH / pixelSpread) ); //average red
-    g = g / ( (topCenterW / pixelSpread) * (topCenterH / pixelSpread) ); //average green
-    b = b / ( (topCenterW / pixelSpread) * (topCenterH / pixelSpread) ); //average blue
-
-    checksum = checksum ^ int(r);
-    checksum = checksum ^ int(g);
-    checksum = checksum ^ int(b);
-
-    port.write(0xAA); //sync
-    port.write(0x04); //channel number
-    port.write((byte)(r)); //red
-    port.write((byte)(g)); //green
-    port.write((byte)(b)); // blue
-    port.write((byte)(checksum)); //checksum byte
-
-    color topR = color(r, g, b);
-    fill(topR);
-    rect((screenW/5)/2 - (topCenterW/5)/2, borderTop/5, topCenterW/5, topCenterH/5);
-
-    r = 0;
-    g = 0;
-    b = 0;
-  }
-
-
-  checksum = 0;
-
   //Calculate bottom left rectangle
   if (blActiv)
   {
@@ -298,6 +258,47 @@ void draw()
   }
 
 
+  //Calculate top center rectangle
+  if (tcActiv)
+  {
+    for(int i = (screenW/2) - (topCenterW/2); i < (screenW/2) + (topCenterW/2); i += pixelSpread)
+    {
+      for(int j = borderTop; j < (topCenterH + borderTop); j += pixelSpread)
+      {
+        pixel = screenshot.getRGB(i,j); //the ARGB integer has the colors of pixel (i,j)
+        r = r+(int)(maxRed&(pixel>>16)); //add up reds
+        g = g+(int)(maxGreen&(pixel>>8)); //add up greens
+        b = b+(int)(maxBlue&(pixel)); //add up blues
+      }
+    }
+    r = r / ( (topCenterW / pixelSpread) * (topCenterH / pixelSpread) ); //average red
+    g = g / ( (topCenterW / pixelSpread) * (topCenterH / pixelSpread) ); //average green
+    b = b / ( (topCenterW / pixelSpread) * (topCenterH / pixelSpread) ); //average blue
+
+    checksum = checksum ^ int(r);
+    checksum = checksum ^ int(g);
+    checksum = checksum ^ int(b);
+
+    port.write(0xAA); //sync
+    port.write(0x04); //channel number
+    port.write((byte)(r)); //red
+    port.write((byte)(g)); //green
+    port.write((byte)(b)); // blue
+    port.write((byte)(checksum)); //checksum byte
+
+    color topC = color(r, g, b);
+    fill(topC);
+    rect((screenW/5)/2 - (topCenterW/5)/2, borderTop/5, topCenterW/5, topCenterH/5);
+
+    r = 0;
+    g = 0;
+    b = 0;
+  }
+
+
+  checksum = 0;
+
+
   //Calculate bottom center rectangle
   if (bcActiv)
   {
@@ -326,8 +327,8 @@ void draw()
     port.write((byte)(b)); //blue
     port.write((byte)(checksum)); //checksum byte
 
-    color topR = color(r, g, b);
-    fill(topR);
+    color botC = color(r, g, b);
+    fill(botC);
     rect((screenW/5)/2 - (botCenterW/5)/2, screenH/5 - (botCenterH/5 + borderBot/5), botCenterW/5, botCenterH/5);
 
     r = 0;
