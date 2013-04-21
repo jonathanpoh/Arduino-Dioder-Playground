@@ -70,6 +70,8 @@ void draw()
   float g=0;
   float b=0;
 
+  int checksum = 0;
+
   //get screenshot into object "screenshot" of class BufferedImage
   BufferedImage screenshot = robby.createScreenCapture(new Rectangle(new Dimension(screenW,screenH)));
 
@@ -85,14 +87,23 @@ void draw()
   g = g / ( (topLeftW / pixelSpread) * (topLeftH / pixelSpread) ); //average green
   b = b / ( (topLeftW / pixelSpread) * (topLeftH / pixelSpread) ); //average blue
 
-  port.write(0xC1); //sync
+  checksum = checksum ^ int(r);
+  checksum = checksum ^ int(g);
+  checksum = checksum ^ int(b);
+
+  port.write(0xAA); //sync
+  port.write(0x00); //sync
   port.write((byte)(r)); //red
   port.write((byte)(g)); //green
   port.write((byte)(b)); //blue
+  port.write((byte)(checksum));
 
   color topL = color(r, g, b);
   fill(topL);
   rect(borderLeft/5, borderTop/5, topLeftW/5, topLeftH/5);
+
+
+  checksum = 0;
 
   //Calculate top right rectangle
   for(int i = screenW - (borderRight + topRightW); i < (screenW-borderRight); i += pixelSpread)
@@ -106,14 +117,24 @@ void draw()
   g = g / ( (topRightW / pixelSpread) * (topRightH / pixelSpread) ); //average green
   b = b / ( (topRightW / pixelSpread) * (topRightH / pixelSpread) ); //average blue
 
-  port.write(0xC2); //sync
+  checksum = checksum ^ int(r);
+  checksum = checksum ^ int(g);
+  checksum = checksum ^ int(b);
+
+
+  port.write(0xAA); //sync
+  port.write(0x01); //channel number
   port.write((byte)(r)); //red
   port.write((byte)(g)); //green
   port.write((byte)(b)); // blue
+  port.write((byte)(checksum)); //checksum byte
+
 
   color topR = color(r, g, b);
   fill(topR);
   rect(screenW/5 - ((topRightW/5)+(borderRight/5)), borderTop/5, topRightW/5, topRightH/5);
+
+  checksum = 0;
 
   //Calculate bottom left rectangle
   for(int i = borderLeft; i < (botLeftW + borderLeft); i += pixelSpread)
@@ -127,14 +148,24 @@ void draw()
   g = g / ( (botLeftW / pixelSpread) * (botLeftH / pixelSpread) ); //average green
   b = b / ( (botLeftW / pixelSpread) * (botLeftH / pixelSpread) ); //average blue
 
-  port.write(0xC3); //sync
+  checksum = checksum ^ int(r);
+  checksum = checksum ^ int(g);
+  checksum = checksum ^ int(b);
+
+
+  port.write(0xAA); //sync
+  port.write(0x02); //channel number
   port.write((byte)(r)); //red
   port.write((byte)(g)); //green
   port.write((byte)(b)); //blue
+  port.write((byte)(checksum)); //checksum byte
 
   color botL = color(r, g, b);
   fill(botL);
   rect(borderLeft/5, screenH/5 - (botLeftH/5 + borderBot/5), botLeftW/5, botLeftH/5);
+
+
+  checksum = 0;
 
   //Calculate bottom right rectangle
   for(int i = screenW - (borderRight + botRightW); i < (screenW-borderRight); i += pixelSpread)
@@ -148,10 +179,16 @@ void draw()
   g = g / ( (botRightW / pixelSpread) * (botRightH / pixelSpread) ); //average green
   b = b / ( (botRightW / pixelSpread) * (botRightH / pixelSpread) ); //average blue
 
-  port.write(0xC4); //sync
+  checksum = checksum ^ int(r);
+  checksum = checksum ^ int(g);
+  checksum = checksum ^ int(b);
+
+  port.write(0xAA); //sync
+  port.write(0x03); //channel number
   port.write((byte)(r)); //red
   port.write((byte)(g)); //green
   port.write((byte)(b)); //blue
+  port.write((byte)(checksum)); //checksum byte
 
   color botR = color(r, g, b);
   fill(botR);
