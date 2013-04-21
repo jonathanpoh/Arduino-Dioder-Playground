@@ -98,7 +98,6 @@ void draw()
   float r=0;
   float g=0;
   float b=0;
-
   int checksum = 0;
 
   //get screenshot into object "screenshot" of class BufferedImage
@@ -139,10 +138,9 @@ void draw()
     r = 0;
     g = 0;
     b = 0;
+    checksum = 0;
   }
 
-
-  checksum = 0;
 
   //Calculate top right rectangle
   if (trActiv)
@@ -179,8 +177,8 @@ void draw()
     r = 0;
     g = 0;
     b = 0;
+    checksum = 0;
   }
-
 
   //Calculate bottom left rectangle
   if (blActiv)
@@ -217,10 +215,8 @@ void draw()
     r = 0;
     g = 0;
     b = 0;
+    checksum = 0;
   }
-
-
-  checksum = 0;
 
   //Calculate bottom right rectangle
   if (brActiv)
@@ -257,6 +253,7 @@ void draw()
     r = 0;
     g = 0;
     b = 0;
+    checksum = 0;
   }
 
 
@@ -295,11 +292,8 @@ void draw()
     r = 0;
     g = 0;
     b = 0;
+    checksum = 0;
   }
-
-
-  checksum = 0;
-
 
   //Calculate bottom center rectangle
   if (bcActiv)
@@ -336,6 +330,7 @@ void draw()
     r = 0;
     g = 0;
     b = 0;
+    checksum = 0;
   }
 
   fill(0);
