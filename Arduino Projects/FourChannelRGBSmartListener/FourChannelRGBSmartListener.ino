@@ -50,7 +50,7 @@ void setup() {
   // set pins 2 through 13 as outputs:
   for (int thisPin = kChannel1FirstPin; thisPin < (kChannel1FirstPin + sizeof(receivedMessage)); thisPin++) {
     pinMode(thisPin, OUTPUT);
-    analogWrite(thisPin, 255);
+    analogWrite(thisPin, 0);
   }
 
   appearToHaveValidMessage = false;
@@ -96,8 +96,7 @@ void loop () {
     // Check that the channel number is within the expected range
     if (currentChannel < numChannels) {
 
-      // TODO: Work out which pin that channel needs to go to
-      // int channelStartPin = kChannel1FirstPin + (currentChannel * 3) ;
+      int channelStartPin = kChannel1FirstPin + (currentChannel * 3) ;
 
       // Read in the body, calculating the checksum as we go.
       // subtracting 1 from the kProtocolBodyLength for the channel number
@@ -111,8 +110,8 @@ void loop () {
       if (receivedChecksum == calculatedChecksum) {
         // Hooray! Push the values to the output pins.
         for (int i = 0; i < (kProtocolBodyLength - 1); i++) {
-          int mappedColour = map(receivedMessage[i], 0, 255, 32, 255);
-          analogWrite(i + kChannel1FirstPin, mappedColour);
+          // int mappedColour = map(receivedMessage[i], 0, 255, 32, 255);
+          analogWrite(i + channelStartPin, receivedMessage[i]);
         }
 
         Serial.print("OK");
