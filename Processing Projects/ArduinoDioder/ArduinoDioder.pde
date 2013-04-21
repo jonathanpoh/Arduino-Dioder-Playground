@@ -23,27 +23,27 @@ int borderTop   = 50;
 int borderBot   = 100;
 
 //Size of top left box
-boolean tlActiv = false;
+boolean tlActiv = true;
 int topLeftW    = 400;
 int topLeftH    = 350;
 
 //Size of top right box
-boolean trActiv = false;
+boolean trActiv = true;
 int topRightW    = 400;
 int topRightH    = 350;
 
 //Size of top center box
-boolean tcActiv = true;
+boolean tcActiv = false;
 int topCenterW  = 1000;
 int topCenterH  = 250;
 
 //Size of bottom left box
-boolean blActiv = false;
+boolean blActiv = true;
 int botLeftW    = 400;
 int botLeftH    = 350;
 
 //Size of bottom right box
-boolean brActiv = false;
+boolean brActiv = true;
 int botRightW    = 400;
 int botRightH    = 350;
 
