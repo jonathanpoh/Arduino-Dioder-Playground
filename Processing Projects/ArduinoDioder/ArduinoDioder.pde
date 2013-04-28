@@ -147,7 +147,7 @@ void draw()
   {
     for(int i = screenW - (borderRight + topRightW); i < (screenW-borderRight); i += pixelSpread)
     {
-      for(int j = borderTop; j < (topRightH + borderBot); j += pixelSpread)
+      for(int j = borderTop; j < (topRightH + borderTop); j += pixelSpread)
       {
         pixel = screenshot.getRGB(i,j); //the ARGB integer has the colors of pixel (i,j)
         r = r+(int)(maxRed&(pixel>>16)); //add up reds
