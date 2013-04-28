@@ -145,7 +145,7 @@ void draw()
   //Calculate top right rectangle
   if (trActiv)
   {
-    for(int i = screenW - (borderRight + topRightW); i < (screenW-borderRight); i += pixelSpread)
+    for(int i = screenW - (topRightW + borderRight); i < (screenW-borderRight); i += pixelSpread)
     {
       for(int j = borderTop; j < (topRightH + borderTop); j += pixelSpread)
       {
@@ -221,7 +221,7 @@ void draw()
   //Calculate bottom right rectangle
   if (brActiv)
   {
-    for(int i = screenW - (borderRight + botRightW); i < (screenW-borderRight); i += pixelSpread)
+    for(int i = screenW - (botRightW + borderRight); i < (screenW-borderRight); i += pixelSpread)
     {
       for(int j = screenH - (botRightH + borderBot); j < (screenH - borderBot); j += pixelSpread)
       {
