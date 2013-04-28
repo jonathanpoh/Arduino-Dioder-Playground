@@ -8,8 +8,7 @@ To keep a bit of sanity, the protocol consists of a one-byte header,
 one-byte for the channel number, 3 bytes for R, G and B values, and tailed by
 a one-byte XOR checksum of the body.
 
-No assumptions are made about colours or number of channels, starting at
-kChannel1FirstPin.
+No assumptions are made about number of channels or the pin order of the colours
 
 NOTE: This project requires Arduino Mega.
 DOUBLE NOTE: This program implements the listening side of the messages
@@ -17,8 +16,6 @@ sent by the included ArduinoDioder Processing project.
 Don't use the DumbListener, because it's dumb.
 
 */
-
-const int kChannel1FirstPin = 2;
 
 // Protocol details:
 // one header byte, one channel number byte, 3 value bytes, one checksum byte
@@ -39,6 +36,15 @@ int numChannels = 4;
 // const int channelThreeByte = 0x02;
 // const int channelFourByte  = 0x03;
 
+// Array containing the number of channels, and the R, G, and G pin order of
+// your LED strip. DIODER uses the GBR order.
+const int kOutputPins[4][3] = {
+                                {4, 2, 3},   // Channel 1 - G, B, R
+                                {7, 5, 6},   // Channel 2 - G, B, R
+                                {10, 8, 9},  // Channel 3 - G, B, R
+                                {13, 11, 12} // Channel 4 - G, B, R
+                              };
+
 int currentChannel;
 
 // Buffers and state
@@ -47,10 +53,12 @@ bool appearToHaveValidMessage;
 byte receivedMessage[12];
 
 void setup() {
-  // set pins 2 through 13 as outputs:
-  for (int thisPin = kChannel1FirstPin; thisPin < (kChannel1FirstPin + sizeof(receivedMessage)); thisPin++) {
-    pinMode(thisPin, OUTPUT);
-    analogWrite(thisPin, 0);
+  // set up the pins in the array as outputs:
+  
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 3; j++) {
+      pinMode(kOutputPins[i][j], OUTPUT);
+    }
   }
 
   appearToHaveValidMessage = false;
@@ -96,8 +104,6 @@ void loop () {
     // Check that the channel number is within the expected range
     if (currentChannel < numChannels) {
 
-      int channelStartPin = kChannel1FirstPin + (currentChannel * 3) ;
-
       // Read in the body, calculating the checksum as we go.
       // subtracting 1 from the kProtocolBodyLength for the channel number
       for (int i = 0; i < (kProtocolBodyLength - 1); i++) {
@@ -111,7 +117,7 @@ void loop () {
         // Hooray! Push the values to the output pins.
         for (int i = 0; i < (kProtocolBodyLength - 1); i++) {
           // int mappedColour = map(receivedMessage[i], 0, 255, 32, 255);
-          analogWrite(i + channelStartPin, receivedMessage[i]);
+          analogWrite(kOutputPins[currentChannel][i], receivedMessage[i]);
         }
 
         Serial.print("OK");
