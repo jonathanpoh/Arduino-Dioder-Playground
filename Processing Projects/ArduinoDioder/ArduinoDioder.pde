@@ -68,7 +68,7 @@ void setup() {
   screenH = displayHeight;
   size(screenW/5, screenH/5, P2D);
   port = new Serial(this, portName, portSpeed); //set baud rate
-  delay(2000);
+  delay(750); // Wait for the serial port to be ready to receive data
   
   if( port.output == null ) {
         println("ERROR: Could not open serial port: "+portName);
